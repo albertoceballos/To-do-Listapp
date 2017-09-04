@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">To-do-List app</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="register">Register</string>
+    <string name="log_in">Log in</string>
+    <string name="forgot_your_password">Forgot your password?</string>
+    <string name="new_user">New User?</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="to_do_list">To-Do List</string>
+    <string name="enter_your_username">Enter your Username</string>
+    <string name="registration">Registration</string>
+    <string name="online_image_view">online button</string>
+    <string name="add_image_view">add list button</string>
+    <string name="add_new_todo">Add a new To-Do...</string>
+    <string name="Add_list_str">Add a new List...</string>
+    <string name="add_btn_str">ADD</string>
+    <string name="cancel_btn_str">CANCEL</string>
+</resources>
