@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private TextView txtview;
     private ImageView imgview;
+    private String addressMaster="https://albertoceballos20.000webhostapp.com/get_master_list.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
         listView = (ListView)findViewById(R.id.to_do_list_view);
         txtview = (TextView) findViewById(R.id.online_user_txtview);
         imgview = (ImageView) findViewById(R.id.add_image_view);
+
+        Downloader d = new Downloader(this,addressMaster,listView,1);
+
+        d.execute();
 
         imgview.setOnClickListener(new View.OnClickListener() {
             @Override

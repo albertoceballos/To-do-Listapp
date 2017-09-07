@@ -11,8 +11,6 @@
         android:id="@+id/add_task_img_vw"
         android:layout_width="60dp"
         android:layout_height="46dp"
-        android:layout_marginBottom="0dp"
-        android:layout_marginTop="0dp"
         android:contentDescription="@string/add_image_view"
         app:layout_constraintBottom_toTopOf="@+id/task_list_view"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -25,8 +23,6 @@
         android:id="@+id/task_etxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:layout_marginTop="0dp"
         android:ems="10"
         android:hint="@string/add_new_todo"
         android:inputType="text"
@@ -38,14 +34,10 @@
 
     <ListView
         android:id="@+id/task_list_view"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="443dp"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="68dp" />
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

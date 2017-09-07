@@ -21,6 +21,7 @@ public class TaskActivity extends AppCompatActivity {
     private EditText editText;
     private ImageView imageView;
     private String task_str, list_name_str;
+    private String addressTask="https://albertoceballos20.000webhostapp.com/get_task.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,10 @@ public class TaskActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.task_list_view);
         editText = (EditText) findViewById(R.id.task_etxt);
         imageView = (ImageView) findViewById(R.id.add_task_img_vw);
+
+        Downloader d = new Downloader(this,addressTask,listView,2);
+
+        d.execute();
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

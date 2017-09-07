@@ -12,76 +12,96 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
- * Created by aac088 on 9/4/2017.
+ * Created by aac088 on 9/7/2017.
  */
 
-public class Downloader extends AsyncTask<Void,Void,String>{
+public class Downloader extends AsyncTask<Void, Integer, String>{
+
     private Context context;
-    private String urlAddress;
-    private ListView listView;
+    private String address;
+    private ListView lv;
 
-    private ProgressDialog progressDialog;
+    private ProgressDialog pd;
 
-    public Downloader(Context context,String urlAddress, ListView listView){
+    private int id;
+
+    public Downloader(Context context, String address, ListView lv, int id){
         this.context=context;
-        this.urlAddress=urlAddress;
-        this.listView=listView;
+        this.address=address;
+        this.lv=lv;
+        this.id=id;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setTitle("Retrieve");
-        progressDialog.setMessage("Retrieving... Please Wait");
-        progressDialog.show();
+
+        pd = new ProgressDialog(context);
+        pd.setTitle("Fetch Data");
+        pd.setMessage("Fetching Data... Please wait");
+        pd.show();
     }
 
     @Override
     protected String doInBackground(Void... params) {
-        return this.downloadData();
+        String data=downloadData();
+        return null;
     }
 
     @Override
-    protected void onPostExecute(String jsonData) {
-        super.onPostExecute(jsonData);
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
 
-        progressDialog.dismiss();
-        if(jsonData.startsWith("Error")){
-            Toast.makeText(context,"Unsuccessful" + jsonData, Toast.LENGTH_SHORT).show();
+        pd.dismiss();
+
+        if(s != null){
+            Parser p = new Parser(context,s,lv,id);
+            p.execute();
         }else{
-
+            Toast.makeText(context,"Unable to download data",Toast.LENGTH_SHORT).show();
         }
     }
 
     private String downloadData(){
-        Object connection = Connector.connect(urlAddress);
-        if(connection.toString().startsWith("Error")){
-            return connection.toString();
-        }
+        InputStream is = null;
+        String line = null;
 
-        try{
-            HttpURLConnection con = (HttpURLConnection) connection;
+        try {
+            URL url = new URL(address);
+            HttpURLConnection con= (HttpURLConnection) url.openConnection();
+            is = new BufferedInputStream(con.getInputStream());
 
-            InputStream inputStream = new BufferedInputStream(con.getInputStream());
-            BufferedReader bufferedReader= new BufferedReader(new InputStreamReader(inputStream));
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-            String line;
-            StringBuffer jsonData = new StringBuffer();
+            StringBuffer sb = new StringBuffer();
 
-            while((line=bufferedReader.readLine())!= null){
-                jsonData.append(line+"\n");
+            if(br != null){
+                while((line=br.readLine()) != null){
+                    sb.append(line+"\n");
+                }
+            }else{
+                return null;
             }
 
-            bufferedReader.close();
-            inputStream.close();
+            return sb.toString();
 
-            return jsonData.toString();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-            return "Error"+e.getMessage();
+        }finally{
+            if(is != null){
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
+        return null;
     }
 }
