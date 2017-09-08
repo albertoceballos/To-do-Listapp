@@ -10,15 +10,16 @@ import java.util.Map;
  * Created by aac088 on 9/1/2017.
  */
 
-public class CreateTodoRequest extends StringRequest{
+public class CreateListRequest extends StringRequest{
 
-    private static final String CREATE_TABLE_REQUEST_URL = "https://albertoceballos20.000webhostapp.com/Create_table.php";
+    private static final String CREATE_TABLE_REQUEST_URL = "https://albertoceballos20.000webhostapp.com/addto_masterlist.php";
     private Map<String,String> params;
 
-    public CreateTodoRequest(String list_name, Response.Listener<String> listener){
+    public CreateListRequest(String listname, String user_id, Response.Listener<String> listener){
         super(Method.POST,CREATE_TABLE_REQUEST_URL,listener,null);
         params = new HashMap<>();
-        params.put("table_name",list_name);
+        params.put("listname",listname);
+        params.put("user_id",user_id);
     }
 
     @Override

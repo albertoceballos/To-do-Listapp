@@ -11,13 +11,14 @@ import java.util.Map;
 
 public class CreateTaskRequest extends StringRequest {
 
-    private static final String CREATE_TASK_REQUEST_URL = "https://albertoceballos20.000webhostapp.com/Add_task.php";
+    private static final String CREATE_TASK_REQUEST_URL = "https://albertoceballos20.000webhostapp.com/add_task.php";
     private Map<String,String> params;
 
-    public CreateTaskRequest(String list_name,String task, Response.Listener<String> listener){
+    public CreateTaskRequest(String master_list_id,String task, String user_id,Response.Listener<String> listener){
         super(Method.POST,CREATE_TASK_REQUEST_URL,listener,null);
-        params.put("table_name",list_name);
-        params.put("new task",task);
+        params.put("master_list_id",master_list_id);
+        params.put("task",task);
+        params.put("user_id",user_id);
     }
 
     @Override

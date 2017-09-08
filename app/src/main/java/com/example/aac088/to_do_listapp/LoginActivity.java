@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         login_but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username_str = user_txt.getText().toString();
+                final String username_str = user_txt.getText().toString();
                 String password_str = pass_txt.getText().toString();
                 Response.Listener<String> responseListener = new Response.Listener<String>(){
 
@@ -56,6 +56,9 @@ public class LoginActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
                             if(success){
                                 Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("user_id",username_str);
+                                intent.putExtras(bundle);
                                 LoginActivity.this.startActivity(intent);
 
                             }else{

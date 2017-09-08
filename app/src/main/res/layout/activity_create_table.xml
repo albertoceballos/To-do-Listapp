@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context="com.example.aac088.to_do_listapp.CreateTableActivity">
+    tools:context="com.example.aac088.to_do_listapp.CreateListActivity">
 
     <EditText
         android:id="@+id/new_list_et"

@@ -6,7 +6,9 @@ package com.example.aac088.to_do_listapp;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -29,12 +31,14 @@ public class Parser extends AsyncTask<Void,Integer,Integer> {
     private ArrayList<String> list= new ArrayList<>();
 
     private ProgressDialog pd;
+    private String user_id;
 
-    public Parser(Context context, String data, ListView lv, int id) {
+    public Parser(Context context, String data, String user_id, ListView lv, int id) {
         this.context = context;
         this.data=data;
         this.lv=lv;
         this.id = id;
+        this.user_id=user_id;
     }
 
 
@@ -42,7 +46,9 @@ public class Parser extends AsyncTask<Void,Integer,Integer> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        pd.setTitle("com.example.aac088.to_do_listapp.Parser");
+        pd = new ProgressDialog(context);
+
+        pd.setTitle("Parser");
         pd.setMessage("Parsing data... Please wait");
         pd.show();
     }
@@ -65,20 +71,43 @@ public class Parser extends AsyncTask<Void,Integer,Integer> {
         super.onPostExecute(integer);
 
         pd.dismiss();
+        if(id==1){
+            if(integer == 1){
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,list);
+                lv.setAdapter(adapter);
 
-        if(integer == 1){
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,list);
-            lv.setAdapter(adapter);
-
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                }
-            });
-        }else{
-            Toast.makeText(context,"Unable to Parse",Toast.LENGTH_SHORT).show();
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String master_list_id = lv.getItemAtPosition(position).toString();
+                        Intent intent = new Intent(context, TaskActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("master_list_id",master_list_id);
+                        bundle.putString("user_id",user_id);
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+                    }
+                });
+            }else{
+                Toast.makeText(context,"Unable to Parse",Toast.LENGTH_SHORT).show();
+            }
         }
+        if(id==2){
+            if(integer == 1){
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1,list);
+                lv.setAdapter(adapter);
+
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+                });
+            }else{
+                Toast.makeText(context,"Unable to Parse",Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
 
     private int parseTask(){

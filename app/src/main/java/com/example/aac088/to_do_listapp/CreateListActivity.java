@@ -15,11 +15,12 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CreateTableActivity extends AppCompatActivity {
+public class CreateListActivity extends AppCompatActivity {
 
     private EditText new_list_et;
     private Button cancel_btn, add_new_list_btn;
-    private String new_list_str;
+    private String listname;
+    private String user_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +31,13 @@ public class CreateTableActivity extends AppCompatActivity {
         cancel_btn =(Button) findViewById(R.id.cancel_btn);
         add_new_list_btn = (Button) findViewById(R.id.add_btn);
 
+        Bundle bundle = getIntent().getExtras();
+        user_id = bundle.getString("user_id");
+
         cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CreateTableActivity.this,MainActivity.class));
+                startActivity(new Intent(CreateListActivity.this,MainActivity.class));
             }
         });
 
@@ -41,7 +45,7 @@ public class CreateTableActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                new_list_str = new_list_et.getText().toString();
+                listname = new_list_et.getText().toString();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>(){
 
@@ -52,11 +56,11 @@ public class CreateTableActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
 
                             if(success){
-                                Intent intent = new Intent(CreateTableActivity.this,LoginActivity.class);
-                               CreateTableActivity.this.startActivity(intent);
+                                Intent intent = new Intent(CreateListActivity.this,MainActivity.class);
+                               CreateListActivity.this.startActivity(intent);
                             }else{
-                                AlertDialog.Builder builder = new AlertDialog.Builder(CreateTableActivity.this);
-                                builder.setMessage("Table Creation Failed");
+                                AlertDialog.Builder builder = new AlertDialog.Builder(CreateListActivity.this);
+                                builder.setMessage("List Creation failed");
                                 builder.setNegativeButton("Retry",null);
                                 builder.create();
                                 builder.show();
@@ -68,9 +72,10 @@ public class CreateTableActivity extends AppCompatActivity {
                     }
                 };
 
-                CreateTodoRequest createTodoRequest = new CreateTodoRequest(new_list_str,responseListener);
-                RequestQueue queue = Volley.newRequestQueue(CreateTableActivity.this);
-                queue.add(createTodoRequest);
+                CreateListRequest createListRequest = new CreateListRequest(listname,user_id,responseListener);
+                RequestQueue queue = Volley.newRequestQueue(CreateListActivity.this);
+                queue.add(createListRequest);
+
             }
         });
     }

@@ -20,8 +20,10 @@ public class TaskActivity extends AppCompatActivity {
     private ListView listView;
     private EditText editText;
     private ImageView imageView;
-    private String task_str, list_name_str;
+    private String master_list_id,user_id;
+    private String task_str;
     private String addressTask="https://albertoceballos20.000webhostapp.com/get_task.php";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,11 @@ public class TaskActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.task_etxt);
         imageView = (ImageView) findViewById(R.id.add_task_img_vw);
 
-        Downloader d = new Downloader(this,addressTask,listView,2);
+        Bundle bundle = getIntent().getExtras();
+        user_id = bundle.getString("user_id");
+        master_list_id = bundle.getString("master_list_id");
+
+        Downloader d = new Downloader(this,addressTask,listView,2,user_id,master_list_id);
 
         d.execute();
 
@@ -40,7 +46,6 @@ public class TaskActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 task_str = editText.getText().toString();
-                list_name_str ="";
 
                 Response.Listener<String> responseListener = new Response.Listener<String>(){
 
@@ -51,8 +56,9 @@ public class TaskActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
 
                             if(success){
-                                Intent intent = new Intent(TaskActivity.this,LoginActivity.class);
-                                TaskActivity.this.startActivity(intent);
+                                Downloader s = new Downloader(TaskActivity.this,addressTask,listView,2,user_id,master_list_id);
+
+                                s.execute();
                             }else{
                                 AlertDialog.Builder builder = new AlertDialog.Builder(TaskActivity.this);
                                 builder.setMessage("Add new task failed");
@@ -67,7 +73,7 @@ public class TaskActivity extends AppCompatActivity {
                     }
                 };
 
-                CreateTaskRequest createTaskRequest  = new CreateTaskRequest(list_name_str,task_str,responseListener);
+                CreateTaskRequest createTaskRequest  = new CreateTaskRequest(master_list_id,task_str,user_id,responseListener);
                 RequestQueue queue = Volley.newRequestQueue(TaskActivity.this);
                 queue.add(createTaskRequest);
             }
