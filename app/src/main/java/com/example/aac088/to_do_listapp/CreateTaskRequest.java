@@ -3,6 +3,7 @@ package com.example.aac088.to_do_listapp;
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,6 +17,7 @@ public class CreateTaskRequest extends StringRequest {
 
     public CreateTaskRequest(String master_list_id,String task, String user_id,Response.Listener<String> listener){
         super(Method.POST,CREATE_TASK_REQUEST_URL,listener,null);
+        params = new HashMap<>();
         params.put("master_list_id",master_list_id);
         params.put("task",task);
         params.put("user_id",user_id);

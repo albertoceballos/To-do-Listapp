@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtview;
     private ImageView imgview;
     private String addressMaster="https://albertoceballos20.000webhostapp.com/get_master_list.php";
-    private String user_id, master_list_id;
+    private String user_id, master_list_id=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +41,6 @@ public class MainActivity extends AppCompatActivity {
                 bundle.putString("user_id",user_id);
                 intent.putExtras(bundle);
                 MainActivity.this.startActivity(intent);
-            }
-        });
-
-
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
             }
         });
     }

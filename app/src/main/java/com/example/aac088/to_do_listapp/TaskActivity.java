@@ -1,6 +1,7 @@
 package com.example.aac088.to_do_listapp;
 
-import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ public class TaskActivity extends AppCompatActivity {
     private String master_list_id,user_id;
     private String task_str;
     private String addressTask="https://albertoceballos20.000webhostapp.com/get_task.php";
-
+    private String cases;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +34,21 @@ public class TaskActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.task_etxt);
         imageView = (ImageView) findViewById(R.id.add_task_img_vw);
 
-        Bundle bundle = getIntent().getExtras();
-        user_id = bundle.getString("user_id");
-        master_list_id = bundle.getString("master_list_id");
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        cases = prefs.getString("cases", "0");
+
+        if(cases.equals("0")){
+            Bundle bundle = getIntent().getExtras();
+            master_list_id = bundle.getString("master_list_id");
+            user_id = bundle.getString("user_id");
+        }
+        if(cases.equals("1")){
+            master_list_id = prefs.getString("master_list_id", null);
+            user_id = prefs.getString("user_id",null);
+        }
+
+
 
         Downloader d = new Downloader(this,addressTask,listView,2,user_id,master_list_id);
 
@@ -56,9 +69,11 @@ public class TaskActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
 
                             if(success){
-                                Downloader s = new Downloader(TaskActivity.this,addressTask,listView,2,user_id,master_list_id);
+                                Downloader d2 = new Downloader(TaskActivity.this,addressTask,listView,2,user_id,master_list_id);
 
-                                s.execute();
+                                d2.execute();
+
+                                editText.setText("");
                             }else{
                                 AlertDialog.Builder builder = new AlertDialog.Builder(TaskActivity.this);
                                 builder.setMessage("Add new task failed");
@@ -72,7 +87,6 @@ public class TaskActivity extends AppCompatActivity {
                         }
                     }
                 };
-
                 CreateTaskRequest createTaskRequest  = new CreateTaskRequest(master_list_id,task_str,user_id,responseListener);
                 RequestQueue queue = Volley.newRequestQueue(TaskActivity.this);
                 queue.add(createTaskRequest);

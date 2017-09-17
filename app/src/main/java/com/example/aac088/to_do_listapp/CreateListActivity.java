@@ -57,6 +57,9 @@ public class CreateListActivity extends AppCompatActivity {
 
                             if(success){
                                 Intent intent = new Intent(CreateListActivity.this,MainActivity.class);
+                                Bundle bundle1 = new Bundle();
+                                bundle1.putString("user_id",user_id);
+                                intent.putExtras(bundle1);
                                CreateListActivity.this.startActivity(intent);
                             }else{
                                 AlertDialog.Builder builder = new AlertDialog.Builder(CreateListActivity.this);
