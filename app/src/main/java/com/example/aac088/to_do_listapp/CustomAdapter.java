@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,10 +20,16 @@ public class CustomAdapter extends BaseAdapter {
 
     private Context context;
     private static ArrayList<Model> modelArrayList;
+    private String addressTask="https://albertoceballos20.000webhostapp.com/get_task.php";
+    private ListView lv;
+    private String user_id, master_list_id;
 
-    public CustomAdapter(Context context, ArrayList<Model> modelArrayList){
+    public CustomAdapter(Context context, ListView lv,String user_id, String master_list_id, ArrayList<Model> modelArrayList){
         this.context=context;
         this.modelArrayList=modelArrayList;
+        this.lv=lv;
+        this.user_id=user_id;
+        this.master_list_id=master_list_id;
     }
 
     public int getViewTypeCount(){
@@ -81,9 +88,22 @@ public class CustomAdapter extends BaseAdapter {
                 Toast.makeText(context, "Checkbox "+pos+" clicked!",Toast.LENGTH_SHORT).show();
 
                 if(modelArrayList.get(pos).getSelected()){
-                    modelArrayList.get(pos).setSelected(false);
+
+                   // modelArrayList.get(pos).setSelected(false);
+
+                    /*
+                    */
                 }else{
+
                     modelArrayList.get(pos).setSelected(true);
+                    DeletListItemRequest d = new DeletListItemRequest(modelArrayList.get(pos).getTask(),master_list_id,user_id,context,lv);
+                    //modelArrayList.remove(modelArrayList.get(pos));
+                    //notifyDataSetChanged();
+                    d.execute();
+
+
+                    /*Downloader d2 = new Downloader(context,addressTask,lv,2,user_id,master_list_id);
+                    d2.execute();*/
                 }
             }
         });

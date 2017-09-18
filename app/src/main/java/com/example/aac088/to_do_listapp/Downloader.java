@@ -46,10 +46,7 @@ public class Downloader extends AsyncTask<Void, Integer, String>{
     protected void onPreExecute() {
         super.onPreExecute();
 
-        pd = new ProgressDialog(context);
-        pd.setTitle("Fetch Data");
-        pd.setMessage("Fetching Data... Please wait");
-        pd.show();
+
     }
 
     @Override
@@ -69,7 +66,7 @@ public class Downloader extends AsyncTask<Void, Integer, String>{
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
 
-        pd.dismiss();
+        //pd.dismiss();
 
         if(s != null){
             Parser p = new Parser(context,s,user_id,lv,id);

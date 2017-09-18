@@ -116,12 +116,14 @@ import java.util.ArrayList;
         if(id==2){//Task List
             if(integer == 1){
                 modelArrayList = list2;
-                customAdapter = new CustomAdapter(context,modelArrayList);
+                customAdapter = new CustomAdapter(context,lv,user_id,master_list_id,modelArrayList);
                 lv.setAdapter(customAdapter);
 
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("cases","0");
+                editor.putString("cases","1");
+                editor.putString("master_list_id",master_list_id);
+                editor.putString("user_id",user_id);
                 editor.commit();
 
 
