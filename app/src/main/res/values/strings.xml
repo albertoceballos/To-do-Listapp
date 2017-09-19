@@ -17,4 +17,6 @@
     <string name="Add_list_str">Add a new List...</string>
     <string name="add_btn_str">ADD</string>
     <string name="cancel_btn_str">CANCEL</string>
+    <string name="Update">UPDATE</string>
+    <string name="DELETE">DELETE</string>
 </resources>

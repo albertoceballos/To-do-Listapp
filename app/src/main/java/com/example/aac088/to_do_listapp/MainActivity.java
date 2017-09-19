@@ -200,6 +200,21 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
+
+                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                        master_list_id = listView.getItemAtPosition(position).toString();
+                        Intent intent = new Intent(MainActivity.this,EditActivity.class);
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putString("master_list_id",master_list_id);
+                        editor.putString("user_id",user_id);
+                        editor.commit();
+                        MainActivity.this.startActivity(intent);
+                        return true;
+                    }
+                });
             }else{
                 Toast.makeText(MainActivity.this,"Unable to Parse",Toast.LENGTH_SHORT).show();
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
