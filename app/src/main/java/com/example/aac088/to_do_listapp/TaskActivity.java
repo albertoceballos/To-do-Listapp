@@ -2,6 +2,7 @@ package com.example.aac088.to_do_listapp;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -313,6 +314,21 @@ public class TaskActivity extends AppCompatActivity {
             }
 
             holder.task.setText(modelArrayList.get(position).getTask());
+            //holder.task.setTag(position,convertView);
+            final String task2 = modelArrayList.get(position).getTask().toString();
+            holder.task.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Intent intent = new Intent(TaskActivity.this,EditTaskActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("task",task2);
+                    bundle.putString("master_list_id",master_list_id);
+                    bundle.putString("user_id",user_id);
+                    intent.putExtras(bundle);
+                    TaskActivity.this.startActivity(intent);
+                    return true;
+                }
+            });
 
             holder.checkBox.setChecked(modelArrayList.get(position).getSelected());
 

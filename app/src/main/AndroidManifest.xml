@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".RegisterUserActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
@@ -23,7 +23,8 @@
         </activity>
         <activity android:name=".CreateListActivity" />
         <activity android:name=".TaskActivity" />
-        <activity android:name=".EditActivity"></activity>
+        <activity android:name=".EditActivity" />
+        <activity android:name=".EditTaskActivity"></activity>
     </application>
 
 </manifest>

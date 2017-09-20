@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -18,15 +19,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class EditActivity extends AppCompatActivity {
-    private TextView edit_list_txtview;
+    private EditText update_task_edittxt;
     private Button del_list_btn, update_btn;
     private String user_id,master_list_id;
+    private String update;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-        edit_list_txtview = (TextView) findViewById(R.id.edit_act_txt_view);
+        update_task_edittxt = (EditText) findViewById(R.id.update_task_edittxt);
         del_list_btn = (Button) findViewById(R.id.del_list_btn);
         update_btn = (Button) findViewById(R.id.updt_list_btn);
 
@@ -34,16 +36,44 @@ public class EditActivity extends AppCompatActivity {
         master_list_id=preferences.getString("master_list_id",null);
         user_id=preferences.getString("user_id",null);
 
-        edit_list_txtview.setText(master_list_id);
+        update_task_edittxt.setText(master_list_id);
 
         update_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EditActivity.this,MainActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("user_id",user_id);
-                intent.putExtras(bundle);
-                EditActivity.this.startActivity(intent);
+                update = update_task_edittxt.getText().toString();
+
+                Response.Listener<String> responseListener = new Response.Listener<String>(){
+
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
+                            if(success){
+                                Intent intent = new Intent(EditActivity.this,MainActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("user_id",user_id);
+                                intent.putExtras(bundle);
+                                EditActivity.this.startActivity(intent);
+
+                            }else{
+                                AlertDialog.Builder builder = new AlertDialog.Builder(EditActivity.this);
+                                builder.setMessage("pass data failed")
+                                        .setNegativeButton("Retry",null)
+                                        .create()
+                                        .show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                UpdateListRequest updateListRequest = new UpdateListRequest(master_list_id,update,user_id,responseListener);
+                UpdateListMasterTaskRequest updateListMasterTaskRequest = new UpdateListMasterTaskRequest(master_list_id,user_id,update,responseListener);
+                RequestQueue queue = Volley.newRequestQueue(EditActivity.this);
+                queue.add(updateListMasterTaskRequest);
+                queue.add(updateListRequest);
             }
         });
 
